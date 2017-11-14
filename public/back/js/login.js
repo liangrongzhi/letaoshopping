@@ -46,4 +46,46 @@ $(function () {
             }
         }
     });
+    //console.log("呵呵");
+    //给表单注册一个校验成功事件 success.form.bv
+    $form.on("success.form.bv", function (e) {
+        //阻止默认行为
+        e.preventDefault();
+        //console.log("呵呵");
+
+        //console.log($form.serialize());
+        //使用ajax发送登录请求
+        $.ajax({
+            type:"post",
+            url:"/employee/employeeLogin",
+
+            data:$form.serialize(),
+            success:function (data) {
+                //console.log(data);
+                if(data.success){
+                    //跳转到首页
+                    location.href = "index.html";
+                }
+
+                if(data.error === 1000){
+                    alert("用户名不存在")
+                }
+
+                if(data.error === 1001){
+                    alert("密码错误")
+                }
+
+            }
+        });
+
+        //$.ajax({
+        //    type:"post",
+        //    url:'/employee/employeeLogin',
+        //    data:$form.serialize(),
+        //    success:function(data){
+        //        console.log(data);
+        //    }
+        //})
+    })
+
 });
