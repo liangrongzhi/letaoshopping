@@ -27,6 +27,9 @@ $(function () {
                 validators: {
                     notEmpty:{
                         message:"用户名不能为空"
+                    },
+                    callback:{
+                        message:"用户名错误"
                     }
                 }
             },
@@ -41,6 +44,9 @@ $(function () {
                         min:6,
                         max:12,
                         message:"密码长度是6-12位"
+                    },
+                    callback:{
+                        message:"密码错误"
                     }
                 }
             }
@@ -68,11 +74,18 @@ $(function () {
                 }
 
                 if(data.error === 1000){
-                    alert("用户名不存在")
+                    //alert("用户名不存在")
+                    //使用updateStatus方法, 主动把username这个字段变成校验失败
+                    //第一个参数: 字段名 表单中的name属性
+                    //第二个参数: INVALID :校验失败
+                    //第三个参数提示: 配置提示消息
+                    $form.data("bootstrapValidator").updateStatus("username", "INVALID", "callback");
                 }
 
                 if(data.error === 1001){
-                    alert("密码错误")
+                    //alert("密码错误")
+                    //手动让密码校验失败
+                    $form.data("bootstrapValidator").updateStatus("password", "INVALID", "callback");
                 }
 
             }
@@ -88,4 +101,10 @@ $(function () {
         //})
     })
 
+
+    //表单重置功能
+    $("[type='reset']").on("click", function () {
+        //console.log("呵呵");
+        $form.data("bootstrapValidator").resetForm();
+    })
 });
